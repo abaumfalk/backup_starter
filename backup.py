@@ -94,7 +94,7 @@ def process_keyfile(opt_arg):
     while True:
         sys.stdout.write('.')
         sys.stdout.flush()
-        id = check_output(['find', arg['keydir'], '-maxdepth', arg['keydepth'], '-iname', arg['keyid']])
+        id = check_output(['find', arg['keydir'], '-maxdepth', arg['keydepth'], '-iname', arg['keyid']]).strip()
         if len(id):
             break
 
