@@ -169,8 +169,8 @@ def read_options():
         file_handle.close()
     except IOError:
         error_exit("could not open options file " + options_file)
-    except ValueError:
-        error_exit("syntax error in json file " + options_file)
+    except ValueError as e:
+        error_exit("syntax error in json file {}: {}".format(options_file, e))
 
     #check for required option keys
     for template in option_template:
