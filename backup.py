@@ -209,9 +209,12 @@ def read_options():
 
 def try_call(call):
     try:
-        check_call(call)
+        if isinstance(call, list):
+            check_call(call)
+        else:
+            check_call(call, shell=True)
     except:
-        error_exit('calling \'' + ' '.join(call) + '\' failed')
+        error_exit('calling {} failed'.format(call))
 
 
 def sleep_echo(s):
