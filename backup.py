@@ -156,7 +156,7 @@ postprocessing_tasks = [
 
 def error_exit(msg):
     print "Error:", msg
-    sleep_echo(3)
+    raw_input('<ENTER> zum Beenden')
     exit(1)
 
 def read_options():
