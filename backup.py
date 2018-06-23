@@ -102,6 +102,7 @@ def process_keyfile(opt_arg):
 
     print ' ok'
 
+    print('id is \'{}\''.format(id))
     if os.path.isdir(id):
         keyfile = os.path.join(id, arg['keyname'])
     else:
