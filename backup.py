@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from subprocess import check_call, check_output
 from time import sleep
 import sys
@@ -99,7 +101,7 @@ def process_keyfile(opt_arg):
 
         sleep(1)
 
-    print ' ok'
+    print(' ok')
 
     print('id is \'{}\''.format(id))
     if os.path.isdir(id):
@@ -131,7 +133,7 @@ def unmount_key(opt_arg):
         sys.stdout.flush()
         sleep(1)
 
-    print 'ok'
+    print('ok')
 
 
 #the option_template describes the backup-options file
@@ -158,8 +160,8 @@ postprocessing_tasks = [
 ]
 
 def error_exit(msg):
-    print "Error:", msg
-    raw_input('Press <ENTER> to exit')
+    print("Error:", msg)
+    input('Press <ENTER> to exit')
     exit(1)
 
 def read_options():
@@ -222,19 +224,19 @@ def try_call(call):
 
 def sleep_echo(s):
     for i in range(s, 0, -1):
-        print i,
+        print(i, end=' ')
         sys.stdout.flush()
         sleep(1)
 
-    print
+    print()
 
 
 def choose_option(options):
     while True:
         for key, option in enumerate(options):
-            print key + 1, ':', option['name']
+            print(key + 1, ':', option['name'])
 
-        line = raw_input('Choice: ')
+        line = input('Choice: ')
         try:
             if not line.isdigit():
                 raise IndexError
@@ -245,8 +247,8 @@ def choose_option(options):
 
             option = options[index]
         except IndexError:
-            print 'Invalid choice!'
-            print
+            print('Invalid choice!')
+            print()
             continue
 
         return option
@@ -277,7 +279,7 @@ print('******************')
 
 option = choose_option(read_options())
 
-print
+print()
 
 if 'tasks' in option:
     call_options(preprocessing_tasks, option['tasks'])
@@ -293,5 +295,5 @@ try_call(['backintime-qt4', '--profile', option['profile']])
 if 'tasks' in option:
     call_options(postprocessing_tasks, option['tasks'])
 
-print 'Ready -',
+print('Ready - ', end='')
 sleep_echo(3)
