@@ -105,9 +105,9 @@ def process_keyfile(opt_arg):
 
     print('id is \'{}\''.format(id))
     if os.path.isdir(id):
-        keyfile = os.path.join(id, arg['keyname'])
+        keyfile = os.path.join(id, arg['keyname'].encode())
     else:
-        keyfile = os.path.join(os.path.dirname(id), arg['keyname'])
+        keyfile = os.path.join(os.path.dirname(id), arg['keyname'].encode())
 
     if not os.path.isfile(keyfile):
         error_exit('keyfile \'' + keyfile + '\' not found')
@@ -116,13 +116,13 @@ def process_keyfile(opt_arg):
 
     if isinstance(opt_arg['call'], list):
         for i, x in enumerate(opt_arg['call']):
-            opt_arg['call'][i] = opt_arg['call'][i].replace('$KEYFILE', keyfile)
+            opt_arg['call'][i] = opt_arg['call'][i].replace('$KEYFILE', keyfile.decode())
     else:
-        opt_arg['call'] = opt_arg['call'].replace('$KEYFILE', keyfile)
+        opt_arg['call'] = opt_arg['call'].replace('$KEYFILE', keyfile.decode())
 
 
 def unmount_key(opt_arg):
-    keydev = check_output('df ' + opt_arg['keyfile'] + ' | sed \'1 d\' | cut -f 1 -d \' \'', shell=True).rstrip()
+    keydev = check_output('df ' + opt_arg['keyfile'].decode() + ' | sed \'1 d\' | cut -f 1 -d \' \'', shell=True).rstrip()
     print('Disconnecting key drive')
     try_call(['umount', keydev])
 
