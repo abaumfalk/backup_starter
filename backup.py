@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from subprocess import check_call, check_output
 from time import sleep
 import sys
@@ -88,7 +87,7 @@ def process_keyfile(opt_arg):
     if not 'keyid' in arg or not 'keydir' in arg or not 'keydepth' in arg or not 'keyname' in arg:
         error_exit('missing parameter for process_keyfile function')
 
-    sys.stdout.write(u'Warte auf Schlüssel mit id ' + arg['keyid'] + '..')
+    sys.stdout.write('Waiting for key id ' + arg['keyid'] + '..')
     sys.stdout.flush()
 
     while True:
@@ -109,7 +108,7 @@ def process_keyfile(opt_arg):
         keyfile = os.path.join(os.path.dirname(id), arg['keyname'])
 
     if not os.path.isfile(keyfile):
-        error_exit('keyfile \'' + keyfile + '\' nicht gefunden')
+        error_exit('keyfile \'' + keyfile + '\' not found')
 
     opt_arg['keyfile'] = keyfile
 
@@ -122,10 +121,10 @@ def process_keyfile(opt_arg):
 
 def unmount_key(opt_arg):
     keydev = check_output('df ' + opt_arg['keyfile'] + ' | sed \'1 d\' | cut -f 1 -d \' \'', shell=True).rstrip()
-    print('Trenne Schlüssel-Laufwerk')
+    print('Disconnecting key drive')
     try_call(['umount', keydev])
 
-    sys.stdout.write(u'Bitte Schlüssel entfernen..')
+    sys.stdout.write('Please remove key..')
     sys.stdout.flush()
     while os.path.exists(keydev):
         sys.stdout.write('.')
@@ -148,19 +147,19 @@ option_template = [
 ]
 
 preprocessing_tasks = [
-    {'name': 'mount', 'msg': 'Verbinde backup Laufwerk'},
-    {'name': 'crypt_open', 'msg': u'Öffne Daten-Verschlüsselung',
+    {'name': 'mount', 'msg': 'Connect key drive'},
+    {'name': 'crypt_open', 'msg': 'Open crypt',
      'preprocess': process_keyfile, 'postprocess': unmount_key},
 ]
 
 postprocessing_tasks = [
-    {'name': 'crypt_close', 'msg': u'Schließe Daten-Verschlüsselung'},
-    {'name': 'umount', 'msg': 'Trenne backup Laufwerk'}
+    {'name': 'crypt_close', 'msg': 'Close crypt'},
+    {'name': 'umount', 'msg': 'Disconnect key drive'}
 ]
 
 def error_exit(msg):
     print "Error:", msg
-    raw_input('<ENTER> zum Beenden')
+    raw_input('Press <ENTER> to exit')
     exit(1)
 
 def read_options():
@@ -235,7 +234,7 @@ def choose_option(options):
         for key, option in enumerate(options):
             print key + 1, ':', option['name']
 
-        line = raw_input('Auswahl: ')
+        line = raw_input('Choice: ')
         try:
             if not line.isdigit():
                 raise IndexError
@@ -246,7 +245,7 @@ def choose_option(options):
 
             option = options[index]
         except IndexError:
-            print u'keine gültige Auswahl!'
+            print 'Invalid choice!'
             print
             continue
 
@@ -285,14 +284,14 @@ if 'tasks' in option:
 
 print(
     '*****************************\n'
-    '* Starte backup-Programm    *\n'
+    '* Starting backup tool      *\n'
     '*****************************\n'
-    '* Fenster nicht schliessen! *\n'
+    '* Do not close this window! *\n'
     '*****************************')
 try_call(['backintime-qt4', '--profile', option['profile']])
 
 if 'tasks' in option:
     call_options(postprocessing_tasks, option['tasks'])
 
-print 'Fertig -',
+print 'Ready -',
 sleep_echo(3)
