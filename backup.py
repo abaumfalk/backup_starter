@@ -113,8 +113,11 @@ def process_keyfile(opt_arg):
 
     opt_arg['keyfile'] = keyfile
 
-    for i, x in enumerate(opt_arg['call']):
-        opt_arg['call'][i] = opt_arg['call'][i].replace('$KEYFILE', keyfile)
+    if isinstance(opt_arg['call'], list):
+        for i, x in enumerate(opt_arg['call']):
+            opt_arg['call'][i] = opt_arg['call'][i].replace('$KEYFILE', keyfile)
+    else:
+        opt_arg['call'] = opt_arg['call'].replace('$KEYFILE', keyfile)
 
 
 def unmount_key(opt_arg):
