@@ -149,14 +149,14 @@ option_template = [
 ]
 
 preprocessing_tasks = [
-    {'name': 'mount', 'msg': 'Connect key drive'},
+    {'name': 'mount', 'msg': 'Connect backup drive'},
     {'name': 'crypt_open', 'msg': 'Open crypt',
      'preprocess': process_keyfile, 'postprocess': unmount_key},
 ]
 
 postprocessing_tasks = [
     {'name': 'crypt_close', 'msg': 'Close crypt'},
-    {'name': 'umount', 'msg': 'Disconnect key drive'}
+    {'name': 'umount', 'msg': 'Disconnect backup drive'}
 ]
 
 def error_exit(msg):
