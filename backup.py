@@ -4,27 +4,31 @@ from contextlib import ExitStack
 import sys
 from time import sleep
 import argparse
-import json
+import yaml
 import os
 
-# example config:
-# {
-#     "options": [
-#         {"name": "USB Disk Toshiba",
-#          "actions": [
-#              {"name": "mount",
-#               "open": "mountpoint -q /media/user/TOSHIBA_EXT4 || mount /media/user/TOSHIBA_EXT4",
-#               "close": "umount /media/user/TOSHIBA_EXT4"
-#               },
-#              {"name": "crypt",
-#               "open": ["encfs", "/media/user/TOSHIBA_EXT4/backup", "/home/user/backup_mnt"],
-#               "close": ["fusermount", "-u", "/home/user/backup_mnt"]
-#               },
-#              {"name": "backup",
-#               "open": ["backintime-qt4", "--profile", "default"]
-#               }]
-#          }]
-# }
+# example config (yaml):
+#
+# options:
+# - name: "USB Disk Toshiba"
+#   actions:
+#   - name: "mount"
+#     open: "mountpoint -q /media/user/TOSHIBA_EXT4 || mount /media/user/TOSHIBA_EXT4"
+#     close: "umount /media/user/TOSHIBA_EXT4"
+#   - name: "crypt"
+#     open:
+#     - "encfs"
+#     - "/media/user/TOSHIBA_EXT4/backup"
+#     - "/home/user/backup_mnt"
+#     close:
+#     - "fusermount"
+#     - "-u"
+#     - "/home/user/backup_mnt"
+#   - name: "backup"
+#     open:
+#     - "backintime-qt4"
+#     - "--profile"
+#     - "default"
 
 
 def error_exit(msg):
@@ -124,7 +128,7 @@ else:
     config_file = os.path.expanduser('~') + "/.backup-options"
 
 with open(config_file, "r") as file:
-    config = json.load(file)
+    config = yaml.load(file)
 
 print('******************')
 print('* BACKUP-STARTER *')
