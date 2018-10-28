@@ -108,12 +108,12 @@ class Runner:
                 continue
 
     def run(self):
-        print("Running {}".format(self._choice['name']))
+        print("Running '{}'".format(self._choice['name']))
 
         with ExitStack() as stack:
             for action in self._choice['actions']:
                 name = action['name']
-                print("Executing {}".format(name))
+                print("Open '{}'".format(name))
 
                 if 'open' in action:
                     act = action
