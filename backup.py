@@ -8,6 +8,11 @@ import yaml
 import os
 
 # example config (yaml):
+# ##global actions can be referenced in all options by name
+# actions:
+# - name: "global action"
+#   open: "test"
+#   close: "test"
 #
 # options:
 # - name: "USB Disk Toshiba"
@@ -107,9 +112,19 @@ class Runner:
 
         with ExitStack() as stack:
             for action in self._choice['actions']:
-                print("Executing {}".format(action['name']))
-                setup = action['open']
-                cleanup = action.get('close')
+                name = action['name']
+                print("Executing {}".format(name))
+
+                if 'open' in action:
+                    act = action
+                else:
+                    for a in self._config['actions']:
+                        if a['name'] == name:
+                            act = a
+                            break
+
+                setup = act['open']
+                cleanup = act.get('close')
 
                 resource = ControlledExecution(setup, cleanup)
                 stack.enter_context(resource)
