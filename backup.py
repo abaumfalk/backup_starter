@@ -87,6 +87,10 @@ class Runner:
 
         self._config = config
 
+        if 'title' in config:
+            for t in config['title']:
+                print(t)
+
         while True:
             for key, option in enumerate(self._config['options']):
                 print("{}: {}".format(key + 1, option['name']))
@@ -145,12 +149,5 @@ else:
 with open(config_file, "r") as file:
     config = yaml.load(file)
 
-print('******************')
-print('* BACKUP-STARTER *')
-print('******************')
-
 runner = Runner(config)
 runner.run()
-
-print('Ready - ', end='')
-sleep_echo(3)
