@@ -117,7 +117,7 @@ class Runner:
         with ExitStack() as stack:
             for action in self._choice['actions']:
                 name = action['name']
-                print("Open '{}'".format(name))
+                print(name)
 
                 if 'open' in action:
                     act = action
