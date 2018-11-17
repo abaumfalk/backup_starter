@@ -138,13 +138,13 @@ class Runner:
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-c', dest='config', action='store',
-                    help='alternative config file (default is ~/.backup-options)')
+                    help='config file')
 
 args = parser.parse_args()
-if args.config is not None:
-    config_file = args.config
-else:
-    config_file = os.path.expanduser('~') + "/.backup-options"
+if args.config is None:
+    error_exit("no config file given")
+
+config_file = args.config
 
 with open(config_file, "r") as file:
     config = yaml.load(file)
