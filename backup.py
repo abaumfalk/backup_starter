@@ -69,7 +69,7 @@ class ControlledExecution:
         self._cleanup_call = cleanup_call
 
     def __enter__(self):
-        self._setup_result = call(self._setup_call, capture_output=True)
+        self._setup_result = call(self._setup_call)
         return self
 
     def __exit__(self, _type, _value, _traceback):
