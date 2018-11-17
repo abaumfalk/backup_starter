@@ -122,6 +122,7 @@ class Runner:
                 if 'open' in action:
                     act = action
                 else:
+                    #search in global actions
                     for a in self._config['actions']:
                         if a['name'] == name:
                             act = a
