@@ -1,11 +1,10 @@
 #!/usr/bin/python3
-from subprocess import check_call, check_output
-from contextlib import ExitStack
+import subprocess as sp
+import contextlib as cl
 import sys
 from time import sleep
 import argparse
 import yaml
-import os
 
 # example config (yaml):
 # ##global actions can be referenced in all options by name
@@ -44,9 +43,9 @@ def error_exit(msg):
 
 def call(call, capture_output=False):
     if capture_output:
-        cfn = check_output
+        cfn = sp.check_output
     else:
-        cfn = check_call
+        cfn = sp.check_call
 
     if isinstance(call, list):
         return cfn(call)
@@ -114,7 +113,7 @@ class Runner:
     def run(self):
         print("Running '{}'".format(self._choice['name']))
 
-        with ExitStack() as stack:
+        with cl.ExitStack() as stack:
             for action in self._choice['actions']:
                 name = action['name']
                 print(name)
