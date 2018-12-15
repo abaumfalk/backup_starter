@@ -115,13 +115,14 @@ class Runner:
 
         with cl.ExitStack() as stack:
             for action in self._choice['actions']:
+                act = None
                 name = action['name']
                 print(name)
 
                 if 'open' in action:
                     act = action
                 else:
-                    #search in global actions
+                    # search in global actions
                     for a in self._config['actions']:
                         if a['name'] == name:
                             act = a
