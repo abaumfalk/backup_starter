@@ -41,18 +41,6 @@ def error_exit(msg):
     exit(1)
 
 
-def call(call, capture_output=False):
-    if capture_output:
-        cfn = sp.check_output
-    else:
-        cfn = sp.check_call
-
-    if isinstance(call, list):
-        return cfn(call)
-    else:
-        return cfn(call, shell=True)
-
-
 def sleep_echo(s):
     for i in range(s, 0, -1):
         print(i, end=' ')
@@ -68,15 +56,20 @@ class ControlledExecution:
         self._cleanup_call = cleanup_call
 
     def __enter__(self):
-        self._setup_result = call(self._setup_call)
+        shell = isinstance(self._setup_call, str)
+        cp = sp.run(self._setup_call, shell=shell)
+        if cp.returncode != 0:
+            error_exit("Executing setup call '{}' finished with returncode {} - giving up!"
+                       .format(self._setup_call, cp.returncode))
         return self
 
     def __exit__(self, _type, _value, _traceback):
         if self._cleanup_call is not None:
-            if isinstance(self._cleanup_call, str):
-                call(self._cleanup_call.format(self._setup_result))
-            else:
-                call(self._cleanup_call)
+            shell = isinstance(self._cleanup_call, str)
+            cp = sp.run(self._cleanup_call, shell=shell)
+            if cp.returncode != 0:
+                print("Warning: Executing cleanup call '{}' finished with returncode {}"
+                      .format(self._cleanup_call, cp.returncode))
 
 
 class Runner:
