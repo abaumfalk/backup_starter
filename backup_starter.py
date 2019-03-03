@@ -120,6 +120,8 @@ class Runner:
                         if a['name'] == name:
                             act = a
                             break
+                    else:
+                        error_exit("action '{}' not found in global actions".format(name))
 
                 setup = act['open']
                 cleanup = act.get('close')
