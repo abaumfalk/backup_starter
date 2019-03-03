@@ -55,7 +55,8 @@ for s in src:
     # shell=True seems necessary, even though the command is 'bash -c "{}"' ?!
     fp = sp.run(cmd, shell=True)
 
-    if fp.returncode != 0:
+    # check rsync return code (0:ok, 24:file vanished)
+    if fp.returncode not in [0, 24]:
         print("Command returned error {}".format(fp.returncode))
         fp.check_returncode()
 
