@@ -32,7 +32,7 @@ for s in src:
     t = os.path.join(target, t_rel)
     os.makedirs(t)
 
-    cmd = "/usr/bin/rsync -Aav"
+    cmd = "/usr/bin/rsync -Aav --delete-excluded"
     last = os.path.join(dst, "last")
     if os.path.islink(last):
         cmd += " --link-dest={}/".format(os.path.join(last, t_rel))
